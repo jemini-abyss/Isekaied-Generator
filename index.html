@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#12082b">
+  <meta name="description" content="落ちてくる人々をトラック君でキャッチしてド派手に異世界転生させる、爆笑＆爽快サイバーファンタジーアクションゲーム！">
+  <meta property="og:title" content="Ｉｓｅｋａｉｅｄ　Ｇｅｎｅｒａｔｏｒ ―― To be is TOBE.">
+  <meta property="og:description" content="落ちてくる社畜や学生たちをトラック君でキャッチして、ピカッと安全に異世界転生させよう！">
+  <meta property="og:image" content="ogp.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ｉｓｅｋａｉｅｄ　Ｇｅｎｅｒａｔｏｒ ―― To be is TOBE.">
+  <meta name="twitter:description" content="落ちてくる社畜や学生たちをトラック君でキャッチして、ピカッと安全に異世界転生させよう！">
+  <meta name="twitter:image" content="ogp.jpg">
+  <title>Ｉｓｅｋａｉｅｄ　Ｇｅｎｅｒａｔｏｒ ―― To be is TOBE.</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚚</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,400;0,700;0,900;1,900&family=Outfit:wght@400;600;800;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-glow" aria-hidden="true"></div>
+
+  <main class="game-shell">
+    <!-- ヘッダー -->
+    <header class="brand-header">
+      <div class="brand-title-wrap">
+        <div class="kicker-badge">
+          <span class="pulse-dot"></span>
+          <span>ＰＯＰＵＬＡＴＩＯＮ　ＳＵＰＰＯＲＴ　ＰＲＯＧＲＡＭ</span>
+        </div>
+        <h1 class="main-title">
+          <span class="fullwidth-text">Ｉｓｅｋａｉｅｄ</span>
+          <span class="accent-title fullwidth-text">Ｇｅｎｅｒａｔｏｒ</span>
+        </h1>
+      </div>
+      <div class="header-controls">
+        <button id="dexButton" class="icon-text-btn" type="button" aria-label="転生図鑑を開く">
+          <span class="btn-icon">📜</span>
+          <span class="btn-label">ＤＥＸ</span>
+        </button>
+        <button id="soundButton" class="icon-text-btn" type="button" aria-label="サウンド切り替え" aria-pressed="false">
+          <span class="btn-icon" id="soundIcon">🔇</span>
+          <span class="btn-label" id="soundLabel">ＳＯＵＮＤ　ＯＦＦ</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 転生速報ニュースティッカー -->
+    <div class="ticker-bar" aria-live="polite">
+      <span class="ticker-tag">✦ ＬＩＶＥ ✦</span>
+      <div class="ticker-window">
+        <div id="tickerContent" class="ticker-text">異世界転生管理局稼働中… トラック君発進準備完了！</div>
+      </div>
+    </div>
+
+    <!-- ゲーム本体カード -->
+    <section class="game-card" aria-label="Isekaied Generator ゲームステージ">
+      <!-- HUDステータスバー -->
+      <div class="hud" aria-live="polite">
+        <div class="hud-item score-item">
+          <span class="hud-label">ＳＣＯＲＥ</span>
+          <strong id="scoreValue" class="glow-value">000000</strong>
+          <small id="highScoreText">HI: 000000</small>
+        </div>
+        <div class="hud-item combo-item">
+          <span class="hud-label">ＣＯＭＢＯ</span>
+          <strong id="comboValue">× 0</strong>
+          <div class="fever-bar-wrap">
+            <div id="feverFill" class="fever-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+        <div class="hud-item life-item">
+          <span class="hud-label">ＬＩＦＥ</span>
+          <div id="lifeHearts" class="life-hearts" aria-label="残りライフ3">
+            <span class="heart is-active">♥</span>
+            <span class="heart is-active">♥</span>
+            <span class="heart is-active">♥</span>
+          </div>
+        </div>
+        <div class="hud-item isekaied-item">
+          <span class="hud-label">ＩＳＥＫＡＩＥＤ</span>
+          <strong id="sentValue">0<small>人</small></strong>
+        </div>
+        <div class="hud-item dream-item">
+          <span class="hud-label">ＤＲＥＡＭ (お布施)</span>
+          <strong id="dreamValue">0<small>ETH</small></strong>
+        </div>
+      </div>
+
+      <!-- Canvas Wrap -->
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="gameCanvas" width="960" height="640" aria-label="ゲーム画面。トラック君で落ちてくる人々を転生させます。"></canvas>
+
+        <!-- FEVER 発動中ネオンバナー -->
+        <div id="feverBanner" class="fever-banner">
+          <span class="fever-sparkle">✦✦✦</span>
+          <span class="fever-title">Ｔｏ　ｂｅ　ｉｓ　ＴＯＢＥ． ＦＥＶＥＲ！！</span>
+          <span class="fever-sparkle">✦✦✦</span>
+        </div>
+
+        <!-- スタート画面オーバーレイ -->
+        <div id="startScreen" class="overlay is-visible">
+          <div class="panel title-panel">
+            <div class="portal-emblem" aria-hidden="true">
+              <div class="ring outer-ring"></div>
+              <div class="ring inner-ring"></div>
+              <span class="emblem-core">🚚✨</span>
+            </div>
+            <p class="panel-kicker">ＥＭＥＲＧＥＮＣＹ　ＳＵＭＭＯＮ</p>
+            <h2 class="panel-title">異世界は<br><span class="highlight">人手不足。</span></h2>
+            <p class="panel-desc">
+              落ちてくる社畜や学生たちを<strong>トラック君</strong>でキャッチして、<br>
+              光り輝く魔法陣とともに安全に<strong>異世界転生（Ｉｓｅｋａｉｅｄ）</strong>させよう！<br>
+              <small class="hint-small">※猫ちゃんは轢かないで地上に着地させてあげてね！</small>
+            </p>
+            <div class="start-action-wrap">
+              <button id="startButton" class="btn-primary" type="button">
+                <span>異世界送りをはじめる</span>
+                <kbd>SPACE</kbd>
+              </button>
+            </div>
+            <div class="control-legend">
+              <div class="legend-item"><kbd>←</kbd> <kbd>→</kbd> または <kbd>A</kbd> <kbd>D</kbd>：トラック移動</div>
+              <div class="legend-item"><kbd>P</kbd> / <kbd>ESC</kbd>：一時停止</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ポーズ画面オーバーレイ -->
+        <div id="pauseScreen" class="overlay">
+          <div class="panel small-panel">
+            <p class="panel-kicker">ＴＲＵＣＫ-ＫＵＮ　ＩＳ　ＲＥＳＴＩＮＧ</p>
+            <h2 class="panel-title">ＰＡＵＳＥ</h2>
+            <p class="panel-desc">休憩中… トラック整備中</p>
+            <button id="resumeButton" class="btn-primary" type="button">
+              <span>再開する</span>
+              <kbd>SPACE</kbd>
+            </button>
+          </div>
+        </div>
+
+        <!-- ゲームオーバー画面オーバーレイ -->
+        <div id="gameOverScreen" class="overlay">
+          <div class="panel gameover-panel">
+            <p class="panel-kicker">ＡＮＯＴＨＥＲ　ＷＯＲＬＤ　ＲＥＰＯＲＴ</p>
+            <h2 class="panel-title gameover-text">ＧＡＭＥ　ＯＶＥＲ</h2>
+            
+            <div class="result-stats-box">
+              <div class="stat-card">
+                <span class="stat-name">転生させた人数</span>
+                <strong id="finalSentCount" class="stat-val">0 人</strong>
+              </div>
+              <div class="stat-card">
+                <span class="stat-name">獲得スコア</span>
+                <strong id="finalScore" class="stat-val highlight">000000</strong>
+              </div>
+              <div class="stat-card">
+                <span class="stat-name">お布施バケツの夢</span>
+                <strong id="finalDream" class="stat-val">0 ETH (無限の夢)</strong>
+              </div>
+            </div>
+
+            <div class="reincarnation-summary-card">
+              <span class="badge-mini">本日もっとも活躍した転生者</span>
+              <div id="mvpCharacter" class="mvp-text">社畜勇者 (スキル: Excel Magic Lv.99)</div>
+            </div>
+
+            <p id="gameOverReview" class="review-text">「魔王軍より抗議文が届いています」</p>
+
+            <div class="button-cluster">
+              <button id="retryButton" class="btn-primary" type="button">
+                <span>もう一度転生させる</span>
+                <kbd>SPACE</kbd>
+              </button>
+              <button id="shareButton" class="btn-secondary" type="button">
+                <span>𝕏 で戦果を自慢する</span>
+              </button>
+              <button id="openDexFromGameOver" class="btn-ghost" type="button">
+                <span>転生図鑑を見る</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- リアルタイム転生結果ポップアップカード -->
+        <div id="reincarnateCard" class="reincarnate-card" aria-live="assertive">
+          <div class="rc-header">
+            <span class="rc-tag">✦ ＩＳＥＫＡＩＥＤ ✦</span>
+            <span id="rcPoints" class="rc-points">+300</span>
+          </div>
+          <div class="rc-body">
+            <div id="rcAvatar" class="rc-avatar">🧑‍💼</div>
+            <div class="rc-info">
+              <div id="rcTitle" class="rc-title">魔導プリンター勇者</div>
+              <div class="rc-skill-row">
+                <span class="rc-skill-label">固有スキル:</span>
+                <span id="rcSkill" class="rc-skill">全角英文字変換 Lv.99</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- アナウンスメッセージトースト -->
+        <div id="announcementToast" class="announcement-toast" aria-live="polite"></div>
+      </div>
+
+      <!-- スマホ・タッチ操作用フッターコントローラー -->
+      <div class="mobile-controls" aria-label="スマートフォン用操作ボタン">
+        <button id="leftButton" class="touch-btn" type="button" aria-label="左へダッシュ">
+          <span class="arrow">◀◀</span>
+          <span class="btn-sub">ＬＥＦＴ</span>
+        </button>
+        <div class="touch-center-hint">
+          <span class="hint-pulse"></span>
+          <span>ＨＯＬＤ　ＴＯ　ＤＲＩＶＥ</span>
+        </div>
+        <button id="rightButton" class="touch-btn" type="button" aria-label="右へダッシュ">
+          <span class="arrow">▶▶</span>
+          <span class="btn-sub">ＲＩＧＨＴ</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 転生図鑑モーダル -->
+    <div id="dexModal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>📜 異世界転生者 大図鑑 (ＤＥＸ)</h3>
+          <button id="closeDexButton" class="modal-close-btn" type="button">✕</button>
+        </div>
+        <p class="dex-summary">これまでにあなたがトラック君で送り出した異世界人たちの記録です。</p>
+        <div id="dexList" class="dex-grid">
+          <!-- JSで動的生成 -->
+        </div>
+        <div class="modal-footer">
+          <p class="signature-text">© 2026 Beggar Gentleman <strong>"To be is TOBE. w"</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- フッター -->
+    <footer class="app-footer">
+      <p class="tagline">✦ ＮＯ　ＢＬＯＯＤ． ＮＯ　ＧＯＲＥ． ＪＵＳＴ　✦　ＭＡＧＩＣ　✦</p>
+      <p class="credits">© 2026 Beggar Gentleman <strong>"To be is TOBE. w"</strong> ―― Powered by Gemini</p>
+    </footer>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
